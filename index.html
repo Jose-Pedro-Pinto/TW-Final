@@ -1,0 +1,254 @@
+<!DOCTYPE html>
+<html lang="pt">
+	<head>
+		<meta charset="UTF-8">
+		<title>test</title>
+		<link rel="stylesheet" type="text/css" href="connect4.css">
+		<script src="init.js"></script>
+		<script src="ai.js"></script>
+		<script src="dom.js"></script>
+		<script src="connect4.js"></script>
+		<script src="highScores.js"></script>
+		<script src="user_processing.js"></script>
+		<script src="server.js"></script>
+		<script src="canvas.js"></script>
+	</head>
+	<body onload='init();'>
+		<a id="Game" style="position: absolute;top: 0;"></a>
+		<div class="border_marker top_menu"	>
+			<h1 style="font-size:300%;margin: 0mm;">
+				<a style="font-size: 150%;color: #AA6644;">Totally</a>
+				<a style="color: red">A</a><a style="color: white">cc</a><a style="color: red">ur</a><a style="color: white">at</a><a style="color: red">e</a> 
+				<a href="https://en.wikipedia.org/wiki/Connect_Four" style="color: green">Connect 4</a>
+				<a style="color: yellow">Simulator</a>
+			</h1>
+		</div>
+		<div class=border_marker style="height: 90%">
+			<div class="border_marker left_menu"> 
+				  <div class=ajust2>
+					  <p>Board Size:</p>
+					  <a>5X5</a><input type=radio value='5,5' name="board">
+					  <br>
+					  <a>5X7</a><input type=radio value='5,7' name="board">
+					  <br>
+					  <a>5X9</a><input type=radio value='5,9' name="board">
+					  <br>
+					  <a>7X6</a><input type=radio value='7,6' name="board" checked="checked">
+					  <a>standard</a>
+					  <br>
+					  <a>9X5</a><input type=radio value='9,5' name="board">
+					  <br>
+					  <a>9X9</a><input type=radio value='9,9' name="board">
+				  </div>
+				  <hr>
+				  <div class=ajust2>
+					  <p>Game Type:</p>
+					  <a>Local</a><input type=radio name="gtype" id='local' onclick="press_button.local();">
+					  <br>
+					  <a>Online</a><input type=radio name="gtype" id='online' onclick="press_button.online();">
+				  </div>
+				  <hr id="vs1" style="display: none;">
+				  <div class=ajust2 id="vs2" style="display: none;">
+					  <p>Vs:</p>
+					  <a>Player</a><input type=radio name="vs" id="vs_player" onclick="press_button.player();">
+					  <br>
+					  <a>Computer</a><input type=radio name="vs" id="vs_computer" onclick="press_button.computer();">
+				  </div>
+				  <hr id="difficulty1" style="display: none;">
+				  <div class=ajust2 id="difficulty2" style="display: none;">
+					<p>Difficulty:</p>
+					  <a>Very Easy</a><input type=radio value=0 name="diff">
+					  <br>
+					  <a>Easy</a><input type=radio value=1 name="diff">
+					  <br>
+					  <a>Medium</a><input type=radio value=2 name="diff" checked="checked">
+					  <br>
+					  <a>Hard</a><input type=radio value=3 name="diff">
+					  <br>
+					  <a>Very Hard</a><input type=radio value=4 name="diff">
+					  <br>
+					  <a>Damn</a><input type=radio value=5 name="diff">
+				  </div>
+				  <hr id="play_as1" style="display: none;">
+				  <div class=ajust2 id="play_as2" style="display: none;">
+					  <p>Play As:</p>
+					  <a>Red-First Player</a><input type=radio name="player_color" value=1 checked="checked">
+					  <br>
+					  <a>Yellow-Second Player</a><input type=radio name="player_color" value=2>
+				  </div>
+				  <hr id="inv_opponent1" style="display: none;">
+				  <div class=ajust2 id="inv_opponent2" style="display: none;">
+					  <input type=button id="search" value="Search for game" onclick="sv_commands.join();">
+					  <input type=button id="cancel" value="Cancel search" style="display: none;" onclick="sv_commands.leave();">
+				  </div>
+				  <hr id="searchHr">
+				  <div class=ajust2 style="position: absolute;bottom: 0.2vw">
+					  <a href="#Game" class=anchor>Go to Top</a>
+					  <br>
+					  <a href="#Rules" class=anchor>Go to Rules</a>
+					  <br>
+					  <a id='user' style='color: black;line-height:3vh;'></a>
+					  <a id='user_error' style='color: black;'></a>
+					  <input type=text id='username' placeholder=username value=asdf1>
+					  <input type=password id='password' placeholder=password value=asdf1>
+					  <br>
+					  <input type=button id='login' value=Login onclick='user_functions.login()'>
+					  <input type=button id='logout' value=Logout onclick='user_functions.logout()' class=logout>
+					  <input type=button id='register' value=Register onclick='user_functions.register();'>
+				  </div>
+			</div>
+			<div class="border_marker right_menu">
+				<div class=turn_marker id='turn'>
+					<a class=turn_display></a>
+				</div>
+				<hr>
+				<div class=ajust2>
+					<a id='warning'>WARNING: warnings go here!</a>
+				</div>
+				<hr>
+				<div class=ajust2>
+					<input type=button value="Start Selected Game" id='start' disabled onclick="game.start();">
+				</div>
+				<div class=ajust2>
+					<input type=button value="Surrender" id='surrender' onclick="current_game.surrender();" style="display: none;">
+				</div>
+				<hr>
+				<div class=ajust2>
+					<input id="width" type=number placeholder="width" style="display:inline-block;width:40%;margin-right:1vw">
+					<input id="height" type=number placeholder="height" style="display:inline-block;width:40%">
+					<input type=button id="show_online_score" value="Online Scores" onclick="press_button.show_online_score()">
+					<input type=button id="hide_online_score" value="Hide Scores" onclick="press_button.hide_online_score();" style="display: none;">
+				</div>
+				<hr>
+				<div class=ajust2>
+					<input type=button id="show_score" value="Show HighScores" onclick="press_button.show_score()">
+					<input type=button id="hide_score" value="Hide HighScores" onclick="press_button.hide_score();" style="display: none;">
+					<input type=button value="Delete HighScores" onclick="press_button.delete_scores()">
+				</div>
+				<hr>
+			</div>
+			<div class="border_marker middle_section">
+				<div id="board" class="border_marker game_area">
+				</div>
+				<div class="border_marker instrucions">
+					<a id="Rules"></a>
+					<br><br>
+					<a style="font-size: 120%;color: red">Instruções do Jogo:</a>
+					<br>
+					O quatro em linha joga-se numa grelha colocada na vertical. 
+					As peças colocadas numa das aberturas no topo da grelha caiem ao longo de calhas e ocupam a primeira posição livre, seja no fundo da grelha ou sobre outra peça. 
+					Cada jogador joga com peças de cor diferente e alternadamente coloca uma peça numa das calhas ainda não completamente preenchidas. 
+					Ganha o primeiro jogador que conseguir colocar 4 peças da sua cor alinhadas, na vertical, horizontal ou diagonal.
+					<br><br>
+					<a style="font-size: 120%;color: red;line-height:100%;">Instruções da Implementaçao:</a><br>
+					Grelha:
+						<span class=tab>
+						Escolher o tamanho da grelha no menu do lado esquerdo.
+						</span>
+					Ordem de Jogada:
+						<span class=tab>
+							O jogador vermelho joga primeiro.
+							<br>
+							O jogador amarelo joga em segundo.
+							<br>
+							Escolher a cor no menu do lado esquerdo.					
+						</span>
+					Tipo De Jogo:
+						<span class=tab>
+							Local:
+							<span class=tab>
+							Contra Jogador:
+								<span class=tab>
+								Neste ponto o jogo está pronto para começar.
+								<br>
+								Pressionar o botão "Start Selected Game" No menu lado direito.
+								</span>
+							Contra Computador:
+								<span class=tab>
+								Escolher a dificuldade no menu do lado esquerdo.
+								<br>
+								Pressionar o botão "Start Selected Game" No menu lado direito.
+								</span>
+							</span>
+							Online-não implementado:
+							<span class=tab>
+								<br>
+								Guest:
+								<span class=tab>
+									No menu lado esquerdo.
+									<br>
+									Escrever o id do oponente.
+									<br>
+									Enviar o convite para jogo pressionando o botão "Send Invite".
+									<br>
+									Caso o browser seja desligado ou atualizado o jogo será perdido.
+								</span>
+								<br>
+								Com conta:
+								<span class=tab>
+									Resgistar: 
+										<span class=tab>
+											Preencher os campos de username e password.
+											<br>
+											Pressionar o botão "Register".
+										</span>
+									Login:
+										<span class=tab>
+											Utilizar o username e password escolhidos no registo.
+											<br>
+											Pressionar o botão "Login".
+										</span>
+									No menu lado esquerdo.
+									<br>								
+									Escrever o id do oponente.
+									<br>
+									Enviar o convite para jogo pressionando o botão "Send Invite".
+								</span>
+							</span>
+						</span>
+					<br>
+					Jogos a decorrer:
+						<span class=tab>
+							No menu do lado direito.
+							<br>
+							Caso esteja na sua conta pode retomar um jogo escolhendo-o no menu "Ongoing Games" e pressionar o botão "Select Game".
+						</span>
+					Aceitar convites para jogos:
+						<span class=tab>
+						Caso esteja na sua conta pode aceitar um convite para jogo escolhendo-o no menu "Invites Recieved" e pressionar o botão "Accept Game".
+						</span>
+					Cancelar convites para jogos:
+						<span class=tab>
+						Caso esteja na sua conta pode cancelar um convite para jogo escolhendo-o no menu "Invites Sent" e pressionar o botão "Cancel Invite".
+						</span>
+					Classificações:
+						<span class=tab>
+						Para ver classificações pressione o botão "Show HightScores"
+						<br>
+						Depois de aberto pode fechar pressionando ou o botão "Hide HighScores", no mesmo local, ou na cruz no canto superior direito do menu de classificações.
+						</span>
+					Durante o jogo:
+						<span class=tab>
+							Para colocar uma peça faça pressione a coluna onde pretende jogar.
+							<br>
+							Pode carregar no botão "Surrender" para desistir do jogo, contando o jogo como uma derrota.
+							<br>
+							Turnos:
+							<br>
+							<span class=tab>
+							A cor do jogador atual aparecera no topo do menu direito; com o texto "Turn".
+							</span>	
+						</span>
+				</div>
+			</div>
+		</div>
+		<div class=scores id="score_board">
+			<div class=close onclick="press_button.hide_score();">X</div>
+			<div id='table'></div>
+		</div>
+		<div class=online_scores id="online_score_board">
+			<div class=close onclick="press_button.hide_online_score();">X</div>
+			<div id='online_table'></div>
+		</div>
+	</body>
+</html>
